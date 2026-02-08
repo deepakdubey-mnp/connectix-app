@@ -14,22 +14,22 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtUtil {
-    
+
     private final Key key;
-    
+
     @Value("${jwt.expiration:86400000}") // Default: 1 day in milliseconds
     private long expiration;
 
-    public JwtUtil() {
-        // Generate a secure key for HS256
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        // Use a fixed secret key for HS256
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(String username, String role) {
         log.debug("Generating JWT token for user: {} with role: {}", username, role);
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
-        
+
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)
@@ -51,7 +51,7 @@ public class JwtUtil {
             throw e;
         }
     }
-    
+
     public boolean validateToken(String token, String username) {
         try {
             Claims claims = extractClaims(token);
@@ -72,7 +72,7 @@ public class JwtUtil {
             return true;
         }
     }
-    
+
     public String getUsernameFromToken(String token) {
         return extractClaims(token).getSubject();
     }
