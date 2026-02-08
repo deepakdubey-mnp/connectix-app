@@ -31,8 +31,8 @@ public class AuthController {
     @PostMapping("/otp")
     public ResponseEntity<String> requestOtp(@Valid @RequestBody OtpRequestDto otpRequestDto) {
         log.info("OTP request received for phone: {}", otpRequestDto.getPhoneNumber());
-        userService.generateAndSendOtp(otpRequestDto.getPhoneNumber());
-        return ResponseEntity.ok("OTP sent successfully");
+        String otp=userService.generateAndSendOtp(otpRequestDto.getPhoneNumber());
+        return ResponseEntity.ok("OTP sent successfully : " + otp);
     }
 
     @PostMapping("/login")
@@ -49,10 +49,5 @@ public class AuthController {
                 .build();
         
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello Ayushi");
     }
 }

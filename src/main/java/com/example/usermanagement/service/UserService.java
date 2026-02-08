@@ -31,10 +31,7 @@ public class UserService implements UserDetailsService {
     public User registerUser(UserRegistrationDto registrationDto) {
         log.info("Registering user with phone: {}", registrationDto.getPhoneNumber());
         
-        if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
-            throw new UserAlreadyExistsException("Email already in use");
-        }
-        if (userRepository.findByPhoneNumber(registrationDto.getPhoneNumber()).isPresent()) {
+       if (userRepository.findByPhoneNumber(registrationDto.getPhoneNumber()).isPresent()) {
             throw new UserAlreadyExistsException("Phone number already in use");
         }
 
