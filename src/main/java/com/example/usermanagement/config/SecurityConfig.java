@@ -32,7 +32,8 @@ public class SecurityConfig {
                             "/swagger-ui/**",
                             "/v3/api-docs/**",
                             "/v3/api-docs.yaml",
-                            "/actuator/health"
+                            "/actuator/health",
+                                "/api/common/attributes"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/products").hasAnyRole("DEALER", "ADMIN")
                         .anyRequest().authenticated())

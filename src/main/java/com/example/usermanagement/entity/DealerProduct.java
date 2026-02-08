@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "dealer_product")
 @Data
@@ -22,5 +24,5 @@ public class DealerProduct {
     private User user;
 
     @OneToMany(mappedBy = "dealerProduct", cascade = CascadeType.ALL, orphanRemoval = true)
-    private java.util.List<DealerProductItem> items;
+    private List<DealerProductItem> items;
 }
