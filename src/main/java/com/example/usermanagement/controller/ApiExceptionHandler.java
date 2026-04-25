@@ -7,6 +7,7 @@ import com.example.usermanagement.exception.DealerProductItemNotFoundException;
 import com.example.usermanagement.exception.ForbiddenException;
 import com.example.usermanagement.exception.InvalidOtpException;
 import com.example.usermanagement.exception.InvalidTransactionException;
+import com.example.usermanagement.exception.NotificationNotFoundException;
 import com.example.usermanagement.exception.OrderNotFoundException;
 import com.example.usermanagement.exception.OtpExpiredException;
 import com.example.usermanagement.exception.ProductAlreadyExistsException;
@@ -179,6 +180,19 @@ public class ApiExceptionHandler {
         log.error("Order not found: {}", ex.getMessage());
         ErrorResponseDto error = ErrorResponseDto.builder()
                 .error("Order Not Found")
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(NotificationNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleNotificationNotFoundException(
+            NotificationNotFoundException ex, HttpServletRequest request) {
+        log.error("Notification not found: {}", ex.getMessage());
+        ErrorResponseDto error = ErrorResponseDto.builder()
+                .error("Notification Not Found")
                 .message(ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .path(request.getRequestURI())
