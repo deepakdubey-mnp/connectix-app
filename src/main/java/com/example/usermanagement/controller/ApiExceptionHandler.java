@@ -9,6 +9,7 @@ import com.example.usermanagement.exception.InvalidOtpException;
 import com.example.usermanagement.exception.OtpExpiredException;
 import com.example.usermanagement.exception.ProductAlreadyExistsException;
 import com.example.usermanagement.exception.ProductNotFoundException;
+import com.example.usermanagement.exception.ShopDetailsNotFoundException;
 import com.example.usermanagement.exception.UserAlreadyExistsException;
 import com.example.usermanagement.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,6 +65,19 @@ public class ApiExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(ShopDetailsNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleShopDetailsNotFoundException(
+            ShopDetailsNotFoundException ex, HttpServletRequest request) {
+        log.error("Shop details not found: {}", ex.getMessage());
+        ErrorResponseDto error = ErrorResponseDto.builder()
+                .error("Shop Details Not Found")
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(DealerProductItemNotFoundException.class)

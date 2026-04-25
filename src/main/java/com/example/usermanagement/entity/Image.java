@@ -5,36 +5,39 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
+
+/**
+ * Entity for storing image upload information.
+ */
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "shop_details")
-public class ShopDetails {
+@Table(name = "images")
+public class Image {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "owner_name")
-    private String ownerName;
+    @Column(nullable = false)
+    private Long fileSize;
 
-    @Column(name = "shop_name")
-    private String shopName;
+    @Column(nullable = false)
+    private String originalFilename;
+    
+    @Column(nullable = false)
+    private String storedFilePath;
+    
+    @Column(nullable = false)
+    private String contentType;
 
-    @Column(name = "category")
-    private String category;
-
-    @Column(name = "gst_number")
-    private String gstNumber;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "pincode")
-    private String pincode;
+    @Column(nullable = false)
+    private LocalDateTime uploadedAt;
 
     @Column(name = "create_date", nullable = false, updatable = false)
     private LocalDateTime createDate;
@@ -42,21 +45,17 @@ public class ShopDetails {
     @Column(name = "update_date", nullable = false)
     private LocalDateTime updateDate;
 
-    @Column(name = "active", nullable = false)
-    private Boolean active;
-
     @PrePersist
     protected void onCreate() {
         LocalDateTime now = LocalDateTime.now();
         this.createDate = now;
         this.updateDate = now;
-        if (this.active == null) {
-            this.active = true;
-        }
+        this.uploadedAt = now;
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.updateDate = LocalDateTime.now();
     }
+
 }
