@@ -1,15 +1,14 @@
-version: '3.8'
 services:
   db:
     image: postgres:16
-    container_name: conectix-postgres
+    container_name: connectix-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: conectix
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: connectix
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin@123
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
 

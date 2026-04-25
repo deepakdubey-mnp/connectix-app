@@ -34,6 +34,8 @@ public class User {
 
     private LocalDateTime otpExpiryTime;
 
+    private String transactionId;
+
     private String language;
 
     @Column(name="authenticated")

@@ -6,6 +6,8 @@ import com.example.usermanagement.exception.CommonAttributeNotFoundException;
 import com.example.usermanagement.exception.DealerProductItemNotFoundException;
 import com.example.usermanagement.exception.ForbiddenException;
 import com.example.usermanagement.exception.InvalidOtpException;
+import com.example.usermanagement.exception.InvalidTransactionException;
+import com.example.usermanagement.exception.OrderNotFoundException;
 import com.example.usermanagement.exception.OtpExpiredException;
 import com.example.usermanagement.exception.ProductAlreadyExistsException;
 import com.example.usermanagement.exception.ProductNotFoundException;
@@ -156,6 +158,32 @@ public class ApiExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
+    @ExceptionHandler(InvalidTransactionException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidTransactionException(
+            InvalidTransactionException ex, HttpServletRequest request) {
+        log.error("Invalid transaction: {}", ex.getMessage());
+        ErrorResponseDto error = ErrorResponseDto.builder()
+                .error("Invalid Transaction")
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleOrderNotFoundException(
+            OrderNotFoundException ex, HttpServletRequest request) {
+        log.error("Order not found: {}", ex.getMessage());
+        ErrorResponseDto error = ErrorResponseDto.builder()
+                .error("Order Not Found")
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
     @ExceptionHandler(OtpExpiredException.class)

@@ -32,14 +32,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                             "/api/auth/**",
+                            "/api/v1/auth/**",
                             "/h2-console/**",
                             "/swagger-ui.html",
                             "/swagger-ui/**",
                             "/v3/api-docs/**",
                             "/v3/api-docs.yaml",
                             "/actuator/health",
-                                "/api/common/attributes"
+                            "/api/common/attributes"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/dealers", "/api/v1/dealers/*/products").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/products").hasAnyRole("DEALER", "ADMIN")
                         .anyRequest().authenticated())
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
